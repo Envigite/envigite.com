@@ -1,112 +1,94 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Code2 } from 'lucide-react';
-import { NAV_LINKS } from '@/config/site';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { HamburgerButton } from '@/components/ui/HamburgerButton'; // <--- Importamos el nuevo botón
+import { HamburgerButton } from '@/components/ui/HamburgerButton';
+import { NAV_LINKS } from '@/config/site';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinksDesktop = NAV_LINKS.map((link) => (
+    <Link
+      key={link.href}
+      href={link.href}
+      className="group relative px-1 py-2 text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-white"
+    >
+      <span>{link.name}</span>
+      <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
+    </Link>
+  ));
+
+  const navLinksMobile = NAV_LINKS.map((link) => (
+    <Link
+      key={link.href}
+      href={link.href}
+      onClick={() => setIsOpen(false)}
+      className="group flex w-full items-center justify-between border-b border-white/10 py-6 text-xl font-medium text-gray-300 transition-all duration-200 active:scale-[0.98] active:text-purple-400"
+    >
+      <span>{link.name}</span>
+      <ChevronRight className="h-5 w-5 text-gray-600 transition-all duration-200 group-active:translate-x-1 group-active:text-purple-500" />
+    </Link>
+  ));
+
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 transition-all duration-300 ease-in-out',
+        'fixed top-0 right-0 left-0 z-50 w-full border-b border-transparent transition-all duration-300 ease-in-out',
         isScrolled
-          ? 'border-b border-white/10 bg-black/80 py-4 shadow-md backdrop-blur-md'
+          ? 'border-white/5 bg-neutral-950/80 py-3 shadow-2xl shadow-black/50 backdrop-blur-md'
           : 'bg-transparent py-6'
       )}
     >
-      <div className="container mx-auto flex items-center justify-between px-6">
+      <div className="container mx-auto flex items-center justify-between px-6 text-white">
         {/* LOGO */}
         <Link
-          href="#home"
-          className="group relative z-50 flex items-center gap-2" // z-50 para que el logo sobresalga si quieres
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          href="/"
+          className="group relative"
+          onClick={() => setIsOpen(false)}
         >
-          <div className="rounded-lg bg-purple-600 p-2 transition-colors group-hover:bg-purple-500">
-            <Code2 className="h-6 w-6 text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-white">
+          <span className="text-xl font-bold tracking-tighter transition-opacity group-hover:opacity-80">
             Envigite<span className="text-purple-500">.dev</span>
           </span>
         </Link>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="group relative text-sm font-medium text-gray-300 transition-colors hover:text-purple-400"
-            >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-          ))}
-          <Link
-            href="#contact"
-            className="rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-purple-700"
-          >
-            Contáctame
-          </Link>
+        <nav className="hidden gap-8 text-sm font-medium md:flex">
+          {navLinksDesktop}
         </nav>
-
-        {/* MOBILE TOGGLE (Tu animación antigua) */}
-        <div className="flex items-center md:hidden">
-          <HamburgerButton
-            isOpen={isMobileMenuOpen}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          />
+        <div className="relative z-[60] flex md:hidden">
+          <HamburgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
         </div>
       </div>
-
-      {/* MOBILE NAV OVERLAY (SIDEBAR) */}
-      {/* 1. backdrop-blur en todo el fondo para oscurecer la web detrás.
-         2. El menú en sí es un div a la derecha (right-0) con un ancho fijo (w-3/4 max-w-sm).
-      */}
       <div
         className={cn(
           'fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
-          isMobileMenuOpen
+          isOpen
             ? 'pointer-events-auto opacity-100'
             : 'pointer-events-none opacity-0'
         )}
-        onClick={() => setIsMobileMenuOpen(false)} // Cierra si clickeas afuera
+        onClick={() => setIsOpen(false)}
       />
-
       <div
         className={cn(
-          'fixed top-0 right-0 z-40 flex h-full w-3/4 max-w-sm flex-col items-center justify-center gap-8 border-l border-white/10 bg-zinc-950 shadow-2xl transition-transform duration-300 ease-in-out md:hidden',
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          'fixed top-0 right-0 bottom-0 z-50 flex w-3/4 max-w-sm flex-col items-start justify-start gap-2 border-l border-white/10 bg-neutral-950/95 px-8 pt-24 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
-        {NAV_LINKS.map((link) => (
-          <Link
-            key={link.name}
-            href={link.href}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-xl font-bold text-gray-300 transition-colors hover:text-purple-500"
-          >
-            {link.name}
-          </Link>
-        ))}
-        <Link
-          href="#contact"
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="mt-4 rounded-full bg-purple-600 px-8 py-3 text-lg font-bold text-white shadow-lg shadow-purple-900/50"
-        >
-          Contáctame
-        </Link>
+        <div className="mb-4 text-xs font-bold tracking-widest text-purple-500 uppercase">
+          Menu
+        </div>
+        {navLinksMobile}
       </div>
     </header>
   );

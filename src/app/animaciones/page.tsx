@@ -4,13 +4,27 @@ import { ComponentShowcase } from '@/components/ui/ComponentShowcase';
 import { HeaderDemo } from './components/lab/demos/ScrollHeaderDemo';
 import { HamburgerDemo } from './components/lab/demos/HamburgerDemo';
 import { TextParallaxDemo } from './components/lab/demos/TextParallaxDemo';
+import { HoverImageLinksDemo } from './components/lab/demos/HoverImageLinksDemo';
+import { ScrollToTopDemo } from './components/lab/demos/ScrollToTopDemo';
+import { NeonTextDemo } from './components/lab/demos/NeonTextDemo';
+import { InfiniteCarouselDemo } from './components/lab/demos/InfiniteCarouselDemo';
 import {
   HAMBURGER_TSX,
   HAMBURGER_CSS,
+  HAMBURGER_USAGE,
   HEADER_TSX,
   HEADER_CSS,
   PARALLAX_TSX,
   PARALLAX_USAGE,
+  HOVER_LINKS_TSX,
+  HOVER_LINKS_USAGE,
+  SCROLL_TOP_TSX,
+  SCROLL_TOP_USAGE,
+  NEON_TSX,
+  NEON_CSS,
+  NEON_USAGE,
+  CAROUSEL_TSX,
+  CAROUSEL_USAGE,
 } from './snippets';
 import { ComponentItem } from '@/lib/types';
 
@@ -26,8 +40,22 @@ const COMPONENT_REGISTRY: { category: string; items: ComponentItem[] }[] = [
         component: <HamburgerDemo />,
         tsxCode: HAMBURGER_TSX,
         cssCode: HAMBURGER_CSS,
+        usageCode: HAMBURGER_USAGE,
         usage: "Importa el componente y controla el estado 'isOpen'.",
         dependencies: 'clsx tailwind-merge',
+        requiresUtils: true,
+      },
+      {
+        id: 'scroll-to-top',
+        title: 'Botón Volver Arriba',
+        description:
+          'Botón flotante que aparece suavemente al hacer scroll. Esencial para páginas largas.',
+        component: <ScrollToTopDemo />,
+        tsxCode: SCROLL_TOP_TSX,
+        usageCode: SCROLL_TOP_USAGE,
+        usage:
+          'Agrégalo en tu layout principal para que esté disponible en todas las páginas.',
+        dependencies: 'lucide-react clsx tailwind-merge',
         requiresUtils: true,
       },
     ],
@@ -63,6 +91,46 @@ const COMPONENT_REGISTRY: { category: string; items: ComponentItem[] }[] = [
           'Envuelve tu contenido con este componente. Requiere Framer Motion.',
         dependencies: 'framer-motion',
         requiresUtils: false,
+      },
+      {
+        id: 'hover-image-links',
+        title: 'Enlaces con Revelado de Imagen',
+        description:
+          'Enlaces elegantes que muestran una imagen flotante siguiendo el cursor al hacer hover. Incluye animación de texto tipo "stagger".',
+        component: <HoverImageLinksDemo />,
+        tsxCode: HOVER_LINKS_TSX,
+        usageCode: HOVER_LINKS_USAGE,
+        usage:
+          'Renderiza una lista de estos componentes dentro de un contenedor oscuro.',
+        dependencies: 'framer-motion lucide-react',
+        requiresUtils: false,
+      },
+      {
+        id: 'neon-text',
+        title: 'Texto Neón Cyberpunk',
+        description:
+          'Texto con animación de parpadeo (flicker) y reflejo inferior. Requiere configuración en globals.css.',
+        component: <NeonTextDemo />,
+        tsxCode: NEON_TSX,
+        cssCode: NEON_CSS,
+        usageCode: NEON_USAGE,
+        usage:
+          'Copia el CSS en tus globales y usa el componente en fondos oscuros.',
+        dependencies: 'clsx tailwind-merge',
+        requiresUtils: true,
+      },
+      {
+        id: 'infinite-carousel',
+        title: 'Carrusel Infinito (Marquee)',
+        description:
+          'Desplazamiento continuo de elementos. Perfecto para mostrar logos de clientes o tecnologías.',
+        component: <InfiniteCarouselDemo />,
+        tsxCode: CAROUSEL_TSX,
+        usageCode: CAROUSEL_USAGE,
+        usage:
+          'Pasa un array de elementos React (iconos, imágenes, tarjetas). Requiere Framer Motion.',
+        dependencies: 'framer-motion clsx tailwind-merge',
+        requiresUtils: true,
       },
     ],
   },

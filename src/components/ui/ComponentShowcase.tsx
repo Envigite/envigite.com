@@ -95,7 +95,7 @@ export const ComponentShowcase = ({
               className={cn(
                 'flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition-all',
                 activeTab === 'usage'
-                  ? 'bg-emerald-600 text-white' // Usamos verde esmeralda para diferenciarlo
+                  ? 'bg-emerald-600 text-white'
                   : 'text-gray-400 hover:text-white'
               )}
             >
