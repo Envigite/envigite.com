@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +17,8 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body
-        className={`${inter.className} bg-slate-950 text-white antialiased`}
+        className={`${inter.className} bg-neutral-950 text-white antialiased`}
       >
-        <Header />
         {children}
       </body>
     </html>

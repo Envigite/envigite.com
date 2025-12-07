@@ -66,7 +66,7 @@ export const Header = () => {
         <nav className="hidden gap-8 text-sm font-medium md:flex">
           {navLinksDesktop}
         </nav>
-        <div className="relative z-[60] flex md:hidden">
+        <div className="relative z-60 flex md:hidden">
           <HamburgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
         </div>
       </div>
