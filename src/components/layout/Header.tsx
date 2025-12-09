@@ -23,7 +23,7 @@ export const Header = () => {
     <Link
       key={link.href}
       href={link.href}
-      className="group relative px-1 py-2 text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-white"
+      className="group relative px-1 py-2 text-sm font-medium text-gray-300 transition-colors duration-300 hover:text-white"
     >
       <span>{link.name}</span>
       <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-purple-500 transition-all duration-300 group-hover:w-full"></span>

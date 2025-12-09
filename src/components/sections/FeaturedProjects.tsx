@@ -5,134 +5,124 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Github, ExternalLink, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const PROJECTS = [
-  {
-    title: "Fashion't Park E-commerce",
-    description:
-      'Plataforma Full Stack de arquitectura robusta y escalable. Integra tienda pública, panel de administración con métricas y seguridad RBAC. Contenerizada con Docker y desplegada en infraestructura AWS (ECR, App Runner, RDS) con CI/CD.',
-    tags: [
-      'Next.js 16',
-      'Node.js',
-      'PostgreSQL',
-      'Docker',
-      'AWS',
-      'TypeScript',
-    ],
-    video: '/videos/demo-ecommerce-minecraft.mp4',
-    image: '/images/demo-ecommerce-minecraft.jpg',
-    links: {
-      demo: 'https://www.fashiontpark.store',
-      repo: 'https://github.com/Envigite/Ecommerce-minecraft',
-    },
-    featured: true,
-  },
-  {
-    title: 'Dashboard Cierre de Temporada',
-    description:
-      'Plataforma legacy de una arquitectura moderna para visualización de KPIs productivos y logísticos.',
-    tags: ['Next.js', 'TypeScript', 'Chart.js', 'Tailwind', 'Framer Motion'],
-    image: '/images/dashboard-cierre.png',
-    links: {
-      demo: 'https://www.envigite.com/cierre',
-      repo: 'https://github.com/Envigite/cierre-temporada',
-    },
-    featured: false,
-  },
-  {
-    title: 'Minecraft Repository',
-    description:
-      'Aplicación Android nativa desarrollada con Kotlin y Arquitectura Limpia (MVVM). Integra consumo de API REST, inyección de dependencias y persistencia de datos local para una experiencia fluida y escalable.',
-    tags: ['Kotlin', 'Android SDK', 'MVVM', 'Retrofit', 'Dagger Hilt', 'Room'],
-    video: '/videos/minecraft-repository.mp4',
-    image: '/images/minecraft-repository-1.gif',
-    links: {
-      demo: 'https://tudemo.com',
-      repo: 'https://github.com/Envigite/MinecraftRepository',
-    },
-    featured: false,
-  },
-];
+import { ALL_PROJECTS } from '@/config/projects';
+import { Project } from '@/lib/types';
 
 const ProjectCard = ({
   project,
   index,
+  isLarge,
 }: {
-  project: (typeof PROJECTS)[0] & { video?: string };
+  project: Project;
   index: number;
+  isLarge: boolean;
 }) => {
+  const detailsLink = `/projects/${project.slug}`;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.2 }}
       className={cn(
         'group relative cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/50 transition-all duration-500 hover:border-white/20',
-        project.featured
-          ? 'aspect-video md:col-span-2'
-          : 'col-span-1 aspect-4/3'
+        isLarge ? 'aspect-video md:col-span-2' : 'col-span-1 aspect-4/3'
       )}
     >
       <div className="absolute inset-0 h-full w-full overflow-hidden">
-        {project.video ? (
-          <video
-            src={project.video}
-            poster={project.image}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
-          />
-        ) : (
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-        )}
+        <Link href={detailsLink} className="block h-full w-full">
+          {project.video ? (
+            project.isVertical ? (
+              <>
+                <div className="absolute inset-0 z-0">
+                  <video
+                    src={project.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="h-full w-full scale-110 object-cover opacity-50 blur-xl"
+                  />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center p-2 transition duration-300 group-hover:scale-105">
+                  <video
+                    src={project.video}
+                    poster={project.image}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="h-full max-w-full rounded-xl border border-white/10 object-contain shadow-2xl"
+                  />
+                </div>
+              </>
+            ) : (
+              <video
+                src={project.video}
+                poster={project.image}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            )
+          ) : (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          )}
 
-        <div className="absolute inset-0 bg-linear-to-t from-neutral-950 via-neutral-950/40 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
+          <div className="absolute inset-0 bg-neutral-950/20 transition-colors group-hover:bg-neutral-950/40" />
+
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+        </Link>
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-neutral-950 via-neutral-950/40 to-transparent opacity-80" />
       </div>
 
-      <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-6 md:p-8">
+      <div className="pointer-events-none absolute bottom-0 left-0 flex w-full flex-col gap-4 p-6 md:p-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h3 className="mb-2 text-2xl leading-tight font-bold text-white md:text-3xl">
+            <h3 className="mb-2 text-2xl leading-tight font-bold text-white drop-shadow-lg md:text-3xl">
               {project.title}
             </h3>
-            <p className="line-clamp-2 max-w-lg text-sm text-neutral-300 md:text-base">
+            <p className="line-clamp-2 max-w-lg text-sm text-neutral-200 drop-shadow-md md:text-base">
               {project.description}
             </p>
           </div>
 
-          <div className="hidden translate-y-4 gap-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:flex">
+          <div className="pointer-events-auto hidden translate-y-4 gap-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:flex">
             <Link
               href={project.links.repo}
               target="_blank"
-              className="rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
+              className="rounded-full border border-white/10 bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
               title="Ver Código"
             >
               <Github className="h-5 w-5" />
             </Link>
-            <Link
-              href={project.links.demo}
-              target="_blank"
-              className="rounded-full bg-white p-3 text-black transition-colors hover:bg-neutral-200"
-              title="Ver Demo en vivo"
-            >
-              <ExternalLink className="h-5 w-5" />
-            </Link>
+
+            {project.links.demo && (
+              <Link
+                href={project.links.demo}
+                target={'_blank'}
+                className="rounded-full bg-white p-3 text-black transition-colors hover:bg-neutral-200"
+                title="Ver Demo"
+              >
+                <ExternalLink className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </div>
 
         <div className="mt-2 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
+          {project.tags.slice(0, 7).map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-200 backdrop-blur-sm"
+              className="rounded-full border border-purple-500/30 bg-purple-500/20 px-3 py-1 text-xs font-medium text-purple-100 shadow-sm backdrop-blur-sm"
             >
               {tag}
             </span>
@@ -140,12 +130,12 @@ const ProjectCard = ({
         </div>
       </div>
 
-      <div className="absolute top-4 right-4 flex gap-2 md:hidden">
+      <div className="pointer-events-auto absolute top-4 right-4 flex gap-2 md:hidden">
         <Link
-          href={project.links.demo}
+          href={detailsLink}
           className="rounded-full border border-white/10 bg-neutral-950/50 p-2 text-white backdrop-blur-md"
         >
-          <ExternalLink className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </motion.div>
@@ -153,8 +143,10 @@ const ProjectCard = ({
 };
 
 export const FeaturedProjects = () => {
+  const displayProjects = ALL_PROJECTS.filter((p) => p.featured).slice(0, 3);
+
   return (
-    <section className="relative bg-neutral-950 py-32">
+    <section className="relative bg-neutral-900 py-32">
       <div className="container mx-auto max-w-7xl px-6">
         <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
@@ -169,8 +161,8 @@ export const FeaturedProjects = () => {
           </div>
 
           <Link
-            href="/proyectos"
-            className="group flex items-center gap-2 border-b border-white/20 pb-1 text-white transition-colors hover:border-white"
+            href="/projects"
+            className="group flex items-center gap-2 border-b border-white/20 pb-1 text-white transition duration-500 hover:scale-110 hover:border-white"
           >
             Ver todos los proyectos
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -178,8 +170,13 @@ export const FeaturedProjects = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {PROJECTS.map((project, idx) => (
-            <ProjectCard key={project.title} project={project} index={idx} />
+          {displayProjects.map((project, idx) => (
+            <ProjectCard
+              key={project.slug}
+              project={project as Project}
+              index={idx}
+              isLarge={idx === 0}
+            />
           ))}
         </div>
       </div>

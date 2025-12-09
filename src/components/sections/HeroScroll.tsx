@@ -36,7 +36,7 @@ export const Hero = () => {
   return (
     <section
       ref={targetRef}
-      className="relative h-[200vh] bg-linear-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+      className="via-neutral-850 relative h-[200vh] bg-linear-to-b from-neutral-900 to-neutral-900"
     >
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
         <motion.div

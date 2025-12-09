@@ -5,7 +5,7 @@ import { FeaturedProjects } from '@/components/sections/FeaturedProjects';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-neutral-950">
+    <main className="flex min-h-screen flex-col bg-neutral-900">
       <Hero />
       <TechStack />
       <Carousell />

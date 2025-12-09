@@ -8,7 +8,7 @@ export default function PortfolioLayout({
   return (
     <>
       <Header />
-      <main className="relative pt-20">{children}</main>
+      <main className="relative">{children}</main>
     </>
   );
 }

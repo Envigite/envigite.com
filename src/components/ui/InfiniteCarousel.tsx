@@ -18,8 +18,8 @@ export const InfiniteCarousel = ({
 }: InfiniteCarouselProps) => {
   return (
     <div className={cn('relative flex w-full overflow-hidden', className)}>
-      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-12 bg-linear-to-r from-neutral-950 to-transparent" />
-      <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-12 bg-linear-to-l from-neutral-950 to-transparent" />
+      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-12 bg-linear-to-r from-neutral-900 to-transparent" />
+      <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-12 bg-linear-to-l from-neutral-900 to-transparent" />
 
       <motion.div
         key={`${direction}-${speed}`}
