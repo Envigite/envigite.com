@@ -1,0 +1,64 @@
+name: Deploy Portfolio to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write # Esto es para conectarse vía OIDC
+  contents: read
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Static Site
+        run: npm run build
+        # Esto genera la carpeta 'out'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # --- DESPLIEGUE INTELIGENTE ---
+
+      # 1. Subir assets estáticos (JS/CSS) con caché largo (1 año)
+      # Estos archivos tienen hash en el nombre, así que nunca cambian.
+      - name: Upload Static Assets
+        run: |
+          aws s3 sync ./out/_next/static s3://${{ secrets.S3_BUCKET_NAME }}/_next/static \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
+
+      # 2. Subir el resto (HTML, JSON, Imágenes) SIN caché
+      # Para que los usuarios vean tus cambios de texto inmediatamente.
+      - name: Upload Content
+        run: |
+          aws s3 sync ./out s3://${{ secrets.S3_BUCKET_NAME }} \
+            --delete \
+            --exclude "_next/static/*" \
+            --cache-control "public, max-age=0, must-revalidate"
+
+      # 3. Limpiar la caché de CloudFront para borrar rastros del sitio viejo
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
