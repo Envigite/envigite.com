@@ -41,10 +41,10 @@ export const Hero = () => {
       ref={targetRef}
       className="via-neutral-850 relative h-[200vh] bg-linear-to-b from-neutral-900 to-neutral-900"
     >
-      <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
+      <div className="sticky top-0 flex h-dvh w-full items-center justify-center overflow-hidden">
         <motion.div
           style={{ opacity: opacityIntro, y: yIntro, scale: scaleIntro }}
-          className="absolute z-10 flex flex-col items-center px-6 text-center"
+          className="absolute z-10 flex w-full flex-col items-center px-6 text-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -104,18 +104,17 @@ export const Hero = () => {
 
         <motion.div
           style={{ opacity: opacityProfile, y: yProfile, scale: scaleProfile }}
-          className="absolute z-20 w-full max-w-6xl px-6"
+          className="pointer-events-none absolute z-20 flex h-full w-full max-w-6xl items-center justify-center px-4 md:px-6"
         >
-          <div className="relative rounded-3xl border border-white/10 bg-linear-to-b from-neutral-900/90 to-neutral-950/90 p-8 backdrop-blur-xl md:p-12">
+          <div className="scrollbar-hide pointer-events-auto relative max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-linear-to-b from-neutral-900/95 to-neutral-950/95 p-6 backdrop-blur-xl md:overflow-visible md:p-12">
             <div className="absolute -top-px right-1/4 left-1/4 h-px bg-linear-to-r from-transparent via-blue-500 to-transparent" />
 
-            <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
-              <div className="flex flex-col items-center gap-6">
-                {' '}
+            <div className="flex flex-col items-center gap-6 md:flex-row md:gap-12">
+              <div className="flex shrink-0 flex-col items-center gap-4 md:gap-6">
                 <div className="group relative">
                   <div className="absolute -inset-1 rounded-full bg-linear-to-r from-blue-600 to-purple-600 opacity-75 blur-lg transition-opacity group-hover:opacity-100" />
 
-                  <div className="relative h-48 w-48 overflow-hidden rounded-full border-4 border-neutral-900 md:h-64 md:w-64">
+                  <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-neutral-900 sm:h-48 sm:w-48 md:h-64 md:w-64">
                     <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-blue-900/20 to-purple-900/20">
                       <Image
                         src="/perfil.png"
@@ -128,11 +127,12 @@ export const Hero = () => {
                     </div>
                   </div>
                 </div>
+
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="flex items-center justify-center gap-4"
+                  className="flex items-center justify-center gap-3 md:gap-4"
                 >
                   {[
                     {
@@ -165,20 +165,20 @@ export const Hero = () => {
                       href={social.url}
                       target="_blank"
                       aria-label={social.name}
-                      className={`group relative flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-3 text-neutral-400 backdrop-blur-md transition-all hover:bg-white/10 ${social.color}`}
+                      className={`group relative flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-2.5 text-neutral-400 backdrop-blur-md transition-all hover:bg-white/10 md:p-3 ${social.color}`}
                     >
-                      <social.icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                      <social.icon className="h-4 w-4 transition-transform group-hover:scale-110 md:h-5 md:w-5" />
                     </Link>
                   ))}
                 </motion.div>
               </div>
 
-              <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center text-center md:text-left">
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="mt-2 mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl"
+                  className="mt-2 mb-4 text-3xl font-bold tracking-tight text-white sm:text-4xl md:mb-6 md:text-6xl lg:text-7xl"
                 >
                   Hola, soy{' '}
                   <span className="bg-linear-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
@@ -190,7 +190,7 @@ export const Hero = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="mb-8 max-w-2xl text-base leading-relaxed text-neutral-400 md:text-xl"
+                  className="mb-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base md:mb-8 md:text-xl"
                 >
                   Desarrollador Full Stack, transformo ideas complejas en
                   productos digitales de{' '}
@@ -208,22 +208,22 @@ export const Hero = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="mb-10 flex flex-wrap gap-3"
+                  className="mb-8 flex flex-wrap justify-center gap-2 md:mb-10 md:justify-start md:gap-3"
                 >
                   {[
-                    { label: 'Arquitectura de Software', icon: Server },
-                    { label: 'Diseño UI/UX', icon: Layout },
-                    { label: 'Rendimiento Web', icon: Zap },
-                    { label: 'DevOps & Cloud', icon: Terminal },
+                    { label: 'Arquitectura', icon: Server },
+                    { label: 'UI/UX', icon: Layout },
+                    { label: 'Performance', icon: Zap },
+                    { label: 'DevOps', icon: Terminal },
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
                       <div
                         key={item.label}
-                        className="flex items-center gap-2 rounded-full border border-white/5 bg-white/5 px-4 py-2 backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-white/10"
+                        className="flex items-center gap-1.5 rounded-full border border-white/5 bg-white/5 px-3 py-1.5 backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-white/10 md:gap-2 md:px-4 md:py-2"
                       >
-                        <Icon className="h-4 w-4 text-purple-400" />
-                        <span className="text-xs font-medium tracking-wide text-neutral-300">
+                        <Icon className="h-3 w-3 text-purple-400 md:h-4 md:w-4" />
+                        <span className="text-[10px] font-medium tracking-wide text-neutral-300 sm:text-xs">
                           {item.label}
                         </span>
                       </div>
@@ -235,22 +235,22 @@ export const Hero = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="flex flex-wrap gap-4"
+                  className="flex flex-wrap justify-center gap-3 md:justify-start md:gap-4"
                 >
                   <Link
                     href="/projects"
-                    className="group flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-black transition-all hover:bg-neutral-200"
+                    className="group flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all hover:bg-neutral-200 md:px-6 md:py-3 md:text-base"
                   >
                     Ver Proyectos
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 md:h-4 md:w-4" />
                   </Link>
 
                   <a
                     href="/docs/CV Benjamin Contreras.pdf"
                     target="_blank"
-                    className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition-all hover:bg-white/10"
+                    className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/10 md:px-6 md:py-3 md:text-base"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-3.5 w-3.5 md:h-4 md:w-4" />
                     Descargar CV
                   </a>
                 </motion.div>
@@ -262,5 +262,3 @@ export const Hero = () => {
     </section>
   );
 };
-
-export default Hero;
