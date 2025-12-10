@@ -35,7 +35,7 @@ export default function DashboardContainer() {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#f8fafc] font-sans text-slate-900 selection:bg-blue-100">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#f8fafc] pt-16 font-sans text-slate-900 selection:bg-blue-100">
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(at_0%_0%,rgba(56,189,248,0.15)_0px,transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(at_100%_0%,rgba(99,102,241,0.15)_0px,transparent_50%)]" />

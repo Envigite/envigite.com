@@ -104,15 +104,16 @@ export const ProjectGridCard = ({ project, index }: ProjectProps) => {
           )}
 
           <div className="flex gap-2 text-neutral-400">
-            <Link
-              href={project.links.repo}
-              target="_blank"
-              className="transition-colors hover:text-white"
-              title="Ver Código"
-            >
-              <Github className="h-5 w-5" />
-            </Link>
-
+            {project.links.repo && (
+              <Link
+                href={project.links.repo}
+                target="_blank"
+                className="transition-colors hover:text-white"
+                title="Ver Código"
+              >
+                <Github className="h-5 w-5" />
+              </Link>
+            )}
             {project.links.demo && (
               <Link
                 href={project.links.demo}

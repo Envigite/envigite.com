@@ -2,7 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useLightbox } from '@/hooks/useLightbox';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from 'framer-motion';
 import { useRef } from 'react';
 import { Project } from '@/lib/types';
 import {
@@ -18,6 +24,8 @@ import {
   Rocket,
   Smartphone,
   Monitor,
+  X,
+  Fullscreen,
 } from 'lucide-react';
 
 const fadeInUp = {
@@ -42,17 +50,18 @@ interface ProjectDetailViewProps {
 export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
   const containerRef = useRef(null);
 
+  const { selectedImage, setSelectedImage } = useLightbox();
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
   const headerOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const headerScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
+  const headerScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.65]);
 
   return (
     <div ref={containerRef} className="min-h-screen bg-neutral-950 pt-24 pb-32">
-      {/* 1. HERO SECTION */}
       <motion.header
         style={{ opacity: headerOpacity, scale: headerScale }}
         className="relative z-10 container mx-auto max-w-5xl px-6 text-center"
@@ -65,17 +74,15 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
         >
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-2 text-sm text-neutral-400 transition-colors hover:text-white"
+            className="group inline-flex items-center gap-2 border-b pb-2 text-sm text-neutral-400 transition-colors hover:text-white"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             Volver
           </Link>
         </motion.div>
 
-        {/* Glow de fondo */}
         <div className="pointer-events-none absolute top-0 left-1/2 -z-10 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-500/20 blur-[120px]" />
 
-        {/* Badge Categoría */}
         <motion.div
           variants={fadeInUp}
           initial="initial"
@@ -88,11 +95,10 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
             ) : (
               <Monitor className="h-3 w-3" />
             )}
-            {project.category || 'Development'}
+            {project.category}
           </span>
         </motion.div>
 
-        {/* Título */}
         <motion.h1
           variants={fadeInUp}
           initial="initial"
@@ -111,7 +117,6 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           {project.description}
         </motion.p>
 
-        {/* Botones */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -122,7 +127,7 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href={project.links.demo}
-                target={project.links.demo.startsWith('/') ? '_self' : '_blank'}
+                target="_blank"
                 className="group flex items-center gap-2 rounded-full bg-white px-8 py-3.5 font-bold text-black transition-all hover:bg-neutral-200"
               >
                 <ExternalLink className="h-4 w-4" />
@@ -131,19 +136,20 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
             </motion.div>
           )}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href={project.links.repo}
-              target="_blank"
-              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 font-bold text-white transition-all hover:border-white/30 hover:bg-white/10"
-            >
-              <Github className="h-4 w-4" />
-              Código Fuente
-            </Link>
+            {project.links.repo && (
+              <Link
+                href={project.links.repo}
+                target="_blank"
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 font-bold text-white transition-all hover:border-white/30 hover:bg-white/10"
+              >
+                <Github className="h-4 w-4" />
+                Código Fuente
+              </Link>
+            )}
           </motion.div>
         </motion.div>
       </motion.header>
 
-      {/* 2. MEDIA SHOWCASE */}
       <section className="container mx-auto mt-20 mb-32 max-w-6xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -170,7 +176,7 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                     loop
                     muted
                     playsInline
-                    className="h-full w-full object-cover"
+                    className="w-full object-cover"
                   />
                 </div>
               </div>
@@ -212,14 +218,26 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           className="grid grid-cols-2 gap-4 md:grid-cols-4"
         >
           {[
-            { label: 'Rol', value: 'Full Stack', icon: Code2 },
-            { label: 'Año', value: '2024', icon: Rocket },
+            {
+              label: 'Rol',
+              value: project.role || 'Developer',
+              icon: Code2,
+            },
+            {
+              label: 'Año',
+              value: project.year || '2024',
+              icon: Rocket,
+            },
             {
               label: 'Stack',
               value: `${project.tags.length}+ Techs`,
               icon: Layers,
             },
-            { label: 'Estado', value: 'Completado', icon: CheckCircle2 },
+            {
+              label: 'Estado',
+              value: project.status || 'Completado',
+              icon: CheckCircle2,
+            },
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -238,7 +256,6 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           ))}
         </motion.div>
 
-        {/* Stack */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -263,7 +280,6 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           </div>
         </motion.div>
 
-        {/* Historia */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -284,7 +300,6 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           </div>
         </motion.div>
 
-        {/* Screenshots */}
         {project.screenshots && project.screenshots.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -294,26 +309,50 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
             <h3 className="mb-8 border-l-4 border-purple-500 pl-4 text-2xl font-bold text-white">
               Galería
             </h3>
+
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {project.screenshots.map((img, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.02 }}
-                  className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-neutral-900 shadow-lg"
+                  onClick={() => setSelectedImage(img)}
+                  className="group relative aspect-video cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-neutral-900 shadow-lg"
                 >
-                  <Image
-                    src={img}
-                    alt="Captura"
-                    fill
-                    className="object-cover"
-                  />
+                  {project.isVertical ? (
+                    <>
+                      <Image
+                        src={img}
+                        alt="Blur Background"
+                        fill
+                        className="scale-110 object-cover opacity-50 blur-xl"
+                      />
+                      <div className="absolute inset-0 p-2">
+                        <Image
+                          src={img}
+                          alt={`Captura móvil ${i}`}
+                          fill
+                          className="object-contain drop-shadow-2xl"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <Image
+                      src={img}
+                      alt={`Captura web ${i}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
+
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Fullscreen className="h-8 w-8 text-white" />
+                  </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
         )}
 
-        {/* Desafíos */}
         <div className="grid gap-8 md:grid-cols-2">
           {project.challenges && (
             <motion.div
@@ -364,7 +403,6 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           )}
         </div>
 
-        {/* Ingeniería */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -379,21 +417,21 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
               Ingeniería & Arquitectura
             </h2>
           </div>
+
           <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: 'Escalabilidad',
-                desc: 'Arquitectura desacoplada lista para escalar horizontalmente.',
-              },
-              {
-                title: 'Seguridad',
-                desc: 'Validación estricta de inputs y protección de rutas sensibles.',
-              },
-              {
-                title: 'Performance',
-                desc: 'Optimización de assets y carga diferida (Lazy Loading).',
-              },
-            ].map((item, i) => (
+            {(
+              project.architecture || [
+                {
+                  title: 'Escalabilidad',
+                  desc: 'Arquitectura diseñada para crecer.',
+                },
+                { title: 'Seguridad', desc: 'Enfoque en protección de datos.' },
+                {
+                  title: 'Performance',
+                  desc: 'Optimización de recursos y carga.',
+                },
+              ]
+            ).map((item, i) => (
               <div
                 key={i}
                 className="rounded-xl border border-white/5 bg-white/2 p-6 transition-colors hover:bg-white/4"
@@ -409,6 +447,46 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
           </div>
         </motion.div>
       </div>
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className={`relative ${
+                project.isVertical
+                  ? 'aspect-9/16 h-[85vh]'
+                  : 'aspect-video w-full max-w-6xl'
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={selectedImage}
+                alt="Vista completa"
+                fill
+                className="object-contain"
+                quality={100}
+                priority
+              />
+
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-11 right-6 cursor-pointer rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20 md:-right-12"
+                title="Cerrar (Esc)"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-// Fíjate en la ruta nueva:
 import DashboardContainer from '@/projects/cierre-temporada/components/dashboard/DashboardContainer';
 
 export const metadata: Metadata = {

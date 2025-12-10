@@ -173,6 +173,7 @@ export const TechStack = () => {
     <section
       ref={targetRef}
       className="via-neutral-850 relative bg-linear-to-b from-neutral-900 to-neutral-900 py-16"
+      id="habilidades"
     >
       <motion.div
         style={{ opacity, scale }}

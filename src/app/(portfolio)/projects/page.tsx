@@ -5,6 +5,7 @@ import { ALL_PROJECTS } from '@/config/projects';
 import { ProjectGridCard } from '@/components/ui/ProjectGridCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
+import { VALID_CATEGORIES } from '@/lib/types';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -13,7 +14,7 @@ export default function ProjectsPage() {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const categories = ['Todos', 'Full Stack', 'Frontend', 'Mobile', 'Creative'];
+  const categories = ['Todos', ...VALID_CATEGORIES];
 
   const filteredProjects =
     filter === 'Todos'

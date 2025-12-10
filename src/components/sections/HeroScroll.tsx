@@ -12,8 +12,11 @@ import {
   Layout,
   Zap,
   Terminal,
+  MessageCircle,
+  Mail,
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const Hero = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -107,44 +110,106 @@ export const Hero = () => {
             <div className="absolute -top-px right-1/4 left-1/4 h-px bg-linear-to-r from-transparent via-blue-500 to-transparent" />
 
             <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
-              <div className="group relative">
-                <div className="absolute -inset-1 rounded-full bg-linear-to-r from-blue-600 to-purple-600 opacity-75 blur-lg transition-opacity group-hover:opacity-100" />
-                <div className="relative h-48 w-48 overflow-hidden rounded-full border-4 border-neutral-900 md:h-64 md:w-64">
-                  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-blue-900/20 to-purple-900/20">
-                    <Image
-                      src="perfil.png"
-                      alt="Foto de Perfil"
-                      fill
-                      className="object-cover object-top"
-                      priority
-                      quality={100}
-                    />
+              <div className="flex flex-col items-center gap-6">
+                {' '}
+                <div className="group relative">
+                  <div className="absolute -inset-1 rounded-full bg-linear-to-r from-blue-600 to-purple-600 opacity-75 blur-lg transition-opacity group-hover:opacity-100" />
+
+                  <div className="relative h-48 w-48 overflow-hidden rounded-full border-4 border-neutral-900 md:h-64 md:w-64">
+                    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-blue-900/20 to-purple-900/20">
+                      <Image
+                        src="/perfil.png"
+                        alt="Foto de Perfil"
+                        fill
+                        className="object-cover object-top"
+                        priority
+                        quality={100}
+                      />
+                    </div>
                   </div>
                 </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex items-center justify-center gap-4"
+                >
+                  {[
+                    {
+                      name: 'LinkedIn',
+                      icon: Linkedin,
+                      url: 'https://www.linkedin.com/in/benja-envigite/',
+                      color: 'hover:text-blue-400',
+                    },
+                    {
+                      name: 'GitHub',
+                      icon: Github,
+                      url: 'https://github.com/Envigite',
+                      color: 'hover:text-purple-400',
+                    },
+                    {
+                      name: 'WhatsApp',
+                      icon: MessageCircle,
+                      url: 'https://wa.link/1u042c',
+                      color: 'hover:text-green-400',
+                    },
+                    {
+                      name: 'Correo',
+                      icon: Mail,
+                      url: 'mailto:benjacontrerasma@yahoo.com',
+                      color: 'hover:text-pink-400',
+                    },
+                  ].map((social) => (
+                    <Link
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      aria-label={social.name}
+                      className={`group relative flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-3 text-neutral-400 backdrop-blur-md transition-all hover:bg-white/10 ${social.color}`}
+                    >
+                      <social.icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                    </Link>
+                  ))}
+                </motion.div>
               </div>
 
-              <div className="flex max-w-xl flex-col items-center text-center md:items-start md:text-left">
-                <h2 className="mt-4 mb-3 text-4xl font-bold text-white">
-                  Hola, soy Benjamín
-                </h2>
+              <div className="flex flex-col justify-center">
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="mt-2 mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl"
+                >
+                  Hola, soy{' '}
+                  <span className="bg-linear-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+                    Benjamín
+                  </span>
+                </motion.h1>
 
-                <p className="mb-6 text-base leading-relaxed text-neutral-400 md:text-lg">
-                  Desarrollador Full Stack con pasión por crear soluciones
-                  digitales que combinan
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="mb-8 max-w-2xl text-base leading-relaxed text-neutral-400 md:text-xl"
+                >
+                  Desarrollador Full Stack, transformo ideas complejas en
+                  productos digitales de{' '}
                   <span className="font-medium text-white">
-                    {' '}
                     arquitectura escalable
                   </span>{' '}
-                  con
+                  y{' '}
                   <span className="font-medium text-white">
-                    {' '}
-                    interfaces intuitivas
+                    experiencias memorables
                   </span>
-                  . Me especializo en transformar ideas complejas en productos
-                  funcionales y elegantes.
-                </p>
+                  .
+                </motion.p>
 
-                <div className="mb-8 flex flex-wrap justify-center gap-3 md:justify-start">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="mb-10 flex flex-wrap gap-3"
+                >
                   {[
                     { label: 'Arquitectura de Software', icon: Server },
                     { label: 'Diseño UI/UX', icon: Layout },
@@ -155,54 +220,40 @@ export const Hero = () => {
                     return (
                       <div
                         key={item.label}
-                        className="flex items-center gap-2 rounded-full border border-white/5 bg-white/3 px-4 py-1.5 backdrop-blur-sm transition-colors hover:bg-white/8"
+                        className="flex items-center gap-2 rounded-full border border-white/5 bg-white/5 px-4 py-2 backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-white/10"
                       >
-                        <Icon className="h-3.5 w-3.5 text-purple-400" />
+                        <Icon className="h-4 w-4 text-purple-400" />
                         <span className="text-xs font-medium tracking-wide text-neutral-300">
                           {item.label}
                         </span>
                       </div>
                     );
                   })}
-                </div>
+                </motion.div>
 
-                <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
-                  <button className="group flex cursor-pointer items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-blue-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-blue-500/40">
-                    Ver Mis Proyectos
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="flex flex-wrap gap-4"
+                >
+                  <Link
+                    href="/projects"
+                    className="group flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-black transition-all hover:bg-neutral-200"
+                  >
+                    Ver Proyectos
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </button>
+                  </Link>
 
-                  <div className="flex gap-2">
-                    <button
-                      className="cursor-pointer rounded-xl border border-white/10 bg-white/5 p-3 text-white transition-all hover:scale-110 hover:border-white/20 hover:bg-white/10"
-                      aria-label="GitHub"
-                      onClick={() => window.open('https://github.com/Envigite')}
-                    >
-                      <Github className="h-5 w-5" />
-                    </button>
-                    <button
-                      className="cursor-pointer rounded-xl border border-white/10 bg-white/5 p-3 text-white transition-all hover:scale-110 hover:border-white/20 hover:bg-white/10"
-                      aria-label="LinkedIn"
-                      onClick={() =>
-                        window.open(
-                          'https://www.linkedin.com/in/benja-envigite/'
-                        )
-                      }
-                    >
-                      <Linkedin className="h-5 w-5" />
-                    </button>
-                    <button
-                      className="cursor-pointer rounded-xl border border-white/10 bg-white/5 p-3 text-white transition-all hover:scale-110 hover:border-white/20 hover:bg-white/10"
-                      aria-label="Descargar CV"
-                      onClick={() => (
-                        window.open('/docs/CV Benjamin Contreras.pdf'),
-                        '_blank'
-                      )}
-                    >
-                      <Download className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
+                  <a
+                    href="/docs/CV Benjamin Contreras.pdf"
+                    target="_blank"
+                    className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition-all hover:bg-white/10"
+                  >
+                    <Download className="h-4 w-4" />
+                    Descargar CV
+                  </a>
+                </motion.div>
               </div>
             </div>
           </div>

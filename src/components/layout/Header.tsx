@@ -19,11 +19,22 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const navLinksDesktop = NAV_LINKS.map((link) => (
     <Link
       key={link.href}
       href={link.href}
-      className="group relative px-1 py-2 text-sm font-medium text-gray-300 transition-colors duration-300 hover:text-white"
+      className="group relative px-1 py-2 text-sm font-medium text-gray-300 transition-colors duration-300 hover:scale-105 hover:text-white"
     >
       <span>{link.name}</span>
       <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
@@ -45,14 +56,15 @@ export const Header = () => {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 w-full border-b border-transparent transition-all duration-300 ease-in-out',
-        isScrolled
-          ? 'border-white/5 bg-neutral-950/80 py-3 shadow-2xl shadow-black/50 backdrop-blur-md'
-          : 'bg-transparent py-6'
+        'fixed top-0 right-0 left-0 z-50 w-full border-b border-transparent',
+        isOpen
+          ? 'border-transparent bg-neutral-950 py-3'
+          : isScrolled
+            ? 'border-white/5 bg-neutral-950/80 py-3 shadow-2xl shadow-black/50 backdrop-blur-md'
+            : 'bg-transparent py-6'
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-6 text-white">
-        {/* LOGO */}
         <Link
           href="/"
           className="group relative"
@@ -70,6 +82,7 @@ export const Header = () => {
           <HamburgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
         </div>
       </div>
+
       <div
         className={cn(
           'fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
@@ -79,9 +92,10 @@ export const Header = () => {
         )}
         onClick={() => setIsOpen(false)}
       />
+
       <div
         className={cn(
-          'fixed top-0 right-0 bottom-0 z-50 flex w-3/4 max-w-sm flex-col items-start justify-start gap-2 border-l border-white/10 bg-neutral-950/95 px-8 pt-24 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden',
+          'fixed top-0 right-0 bottom-0 z-50 flex w-3/4 max-w-sm flex-col items-start justify-start gap-2 border-l border-white/10 bg-neutral-950 px-8 pt-24 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-in-out md:hidden',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >

@@ -96,15 +96,16 @@ const ProjectCard = ({
           </div>
 
           <div className="pointer-events-auto hidden translate-y-4 gap-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:flex">
-            <Link
-              href={project.links.repo}
-              target="_blank"
-              className="rounded-full border border-white/10 bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
-              title="Ver Código"
-            >
-              <Github className="h-5 w-5" />
-            </Link>
-
+            {project.links.repo && (
+              <Link
+                href={project.links.repo}
+                target="_blank"
+                className="rounded-full border border-white/10 bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
+                title="Ver Código"
+              >
+                <Github className="h-5 w-5" />
+              </Link>
+            )}
             {project.links.demo && (
               <Link
                 href={project.links.demo}
@@ -118,7 +119,7 @@ const ProjectCard = ({
           </div>
         </div>
 
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 hidden flex-wrap gap-2 md:flex">
           {project.tags.slice(0, 7).map((tag) => (
             <span
               key={tag}

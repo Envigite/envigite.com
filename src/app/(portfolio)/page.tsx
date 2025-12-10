@@ -2,6 +2,8 @@ import { Hero } from '@/components/sections/HeroScroll';
 import { Carousell } from '@/components/sections/Carousell';
 import { TechStack } from '@/components/sections/TechStack';
 import { FeaturedProjects } from '@/components/sections/FeaturedProjects';
+import { Timeline } from '@/components/sections/Timeline';
+import { Footer } from '@/components/layout/Footer';
 
 export default function Home() {
   return (
@@ -10,11 +12,8 @@ export default function Home() {
       <TechStack />
       <Carousell />
       <FeaturedProjects />
-      <section className="flex h-screen w-full items-center justify-center">
-        <h2 className="text-4xl font-bold text-white/20">
-          Siguiente Sección...
-        </h2>
-      </section>
+      <Timeline />
+      <Footer />
     </main>
   );
 }
