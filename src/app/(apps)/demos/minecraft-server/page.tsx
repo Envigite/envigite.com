@@ -128,7 +128,7 @@ export default function Home() {
         className="absolute inset-0 -z-10 h-full w-full object-cover"
       >
         <source
-          src="/videos/projects/minecraft-server/demo-minecraft-server.webm"
+          src="/videos/projects/minecraft-server/background.webm"
           type="video/webm"
         />
       </video>
@@ -231,7 +231,7 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                className="z-50 h-6 max-w-full rounded-xl border border-gray-500 object-contain shadow-2xl hover:scale-1550"
+                className="z-50 h-6 max-w-full rounded-xl border border-gray-500 object-contain shadow-[4px_4px_2px_0px_rgba(0,0,0,0.4)] transition-transform duration-500 hover:scale-800"
               />
               <MinecraftButton
                 href={SERVER_CONFIG.fabricLink}

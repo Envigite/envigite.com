@@ -54,23 +54,25 @@ export const Header = () => {
   ));
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 right-0 left-0 z-50 w-full border-b border-transparent',
-        isOpen
-          ? 'border-transparent bg-neutral-950 py-3'
-          : isScrolled
-            ? 'border-white/5 bg-neutral-950/80 py-3 shadow-2xl shadow-black/50 backdrop-blur-md'
-            : 'bg-transparent py-6'
-      )}
-    >
-      <div className="container mx-auto flex items-center justify-between px-6 text-white">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full">
+      <div
+        className={cn(
+          'absolute inset-0 -z-10 border-b transition-all duration-300',
+          isOpen
+            ? 'border-transparent bg-neutral-950 py-3'
+            : isScrolled
+              ? 'border-white/5 bg-neutral-950 py-3 shadow-2xl backdrop-blur-md'
+              : 'border-transparent bg-transparent py-6'
+        )}
+        style={{ height: '100%' }}
+      />
+      <div className="container mx-auto flex h-full min-h-[72px] items-center justify-between px-6 text-white">
         <Link
           href="/"
           className="group relative"
           onClick={() => setIsOpen(false)}
         >
-          <span className="text-xl font-bold tracking-tighter transition-opacity group-hover:opacity-80">
+          <span className="text-xl font-bold tracking-tighter">
             Envigite<span className="text-purple-500">.dev</span>
           </span>
         </Link>
@@ -86,9 +88,7 @@ export const Header = () => {
       <div
         className={cn(
           'fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
-          isOpen
-            ? 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0'
+          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
         onClick={() => setIsOpen(false)}
       />
