@@ -10,6 +10,7 @@ import { HoverImageLinksDemo } from '@/projects/animaciones/components/lab/demos
 import { ScrollToTopDemo } from '@/projects/animaciones/components/lab/demos/ScrollToTopDemo';
 import { NeonTextDemo } from '@/projects/animaciones/components/lab/demos/NeonTextDemo';
 import { InfiniteCarouselDemo } from '@/projects/animaciones/components/lab/demos/InfiniteCarouselDemo';
+import { GlowPricingDemo } from '@/projects/animaciones/components/lab/demos/GlowPricingDemo';
 import {
   HAMBURGER_TSX,
   HAMBURGER_CSS,
@@ -27,6 +28,9 @@ import {
   NEON_USAGE,
   CAROUSEL_TSX,
   CAROUSEL_USAGE,
+  GLOW_PRICING_TSX,
+  GLOW_PRICING_CSS,
+  GLOW_PRICING_USAGE,
 } from '@/projects/animaciones/snippets';
 import { ComponentItem } from '@/lib/types';
 import {
@@ -146,6 +150,19 @@ const COMPONENT_REGISTRY: { category: string; items: ComponentItem[] }[] = [
         usage: 'Pasa un array de elementos React. Requiere Framer Motion.',
         dependencies: 'framer-motion clsx tailwind-merge',
         requiresUtils: true,
+      },
+      {
+        id: 'glow-pricing-module',
+        title: 'Interactive Glow Cards',
+        description:
+          'Sistema de pricing con efecto spotlight radial utilizando CSS Modules y ResizeObserver para sincronización de capas.',
+        component: <GlowPricingDemo />,
+        tsxCode: GLOW_PRICING_TSX,
+        usageCode: GLOW_PRICING_USAGE,
+        cssCode: GLOW_PRICING_CSS,
+        usage:
+          'Implementado con CSS Modules para evitar fugas de estilo. Utiliza un sistema de doble capa (base y overlay) sincronizado mediante JS.',
+        requiresUtils: false,
       },
     ],
   },

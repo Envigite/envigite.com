@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { useScroll, useTransform, motion } from 'framer-motion';
+import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
 import {
   ArrowRight,
   Github,
@@ -26,24 +26,33 @@ export const Hero = () => {
     offset: ['start start', 'end start'],
   });
 
+  // Versión suavizada del progreso para evitar "jittering" en móviles
+  const smoothProgress = useSpring(scrollYProgress, {
+    damping: 20,
+    stiffness: 100,
+    mass: 0.5,
+  });
+
   // Animaciones del estado inicial
-  const opacityIntro = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const yIntro = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
-  const scaleIntro = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
+  const opacityIntro = useTransform(smoothProgress, [0, 0.25], [1, 0]);
+  const yIntro = useTransform(smoothProgress, [0, 0.25], [0, -50]); // Reducido el desplazamiento
+  const scaleIntro = useTransform(smoothProgress, [0, 0.25], [1, 0.95]);
 
   // Animaciones del perfil
-  const opacityProfile = useTransform(scrollYProgress, [0.15, 0.45], [0, 1]);
-  const yProfile = useTransform(scrollYProgress, [0.15, 0.45], [120, 0]);
-  const scaleProfile = useTransform(scrollYProgress, [0.15, 0.45], [0.9, 1]);
+  const opacityProfile = useTransform(smoothProgress, [0.2, 0.5], [0, 1]);
+  const yProfile = useTransform(smoothProgress, [0.2, 0.5], [80, 0]); // Reducido el salto
+  const scaleProfile = useTransform(smoothProgress, [0.2, 0.5], [0.95, 1]);
 
   return (
-    <section
-      ref={targetRef}
-      className="via-neutral-850 relative h-[200vh] bg-linear-to-b from-neutral-900 to-neutral-900"
-    >
+    <section ref={targetRef} className="relative h-[200vh] bg-neutral-900">
       <div className="sticky top-0 flex h-dvh w-full items-center justify-center overflow-hidden">
         <motion.div
-          style={{ opacity: opacityIntro, y: yIntro, scale: scaleIntro }}
+          style={{
+            opacity: opacityIntro,
+            y: yIntro,
+            scale: scaleIntro,
+            willChange: 'transform, opacity',
+          }}
           className="absolute z-10 flex w-full flex-col items-center px-6 text-center"
         >
           <motion.div
@@ -103,10 +112,15 @@ export const Hero = () => {
         </motion.div>
 
         <motion.div
-          style={{ opacity: opacityProfile, y: yProfile, scale: scaleProfile }}
-          className="pointer-events-none absolute z-20 flex h-full w-full max-w-6xl items-center justify-center px-4 md:px-6"
+          style={{
+            opacity: opacityProfile,
+            y: yProfile,
+            scale: scaleProfile,
+            willChange: 'transform, opacity',
+          }}
+          className="pointer-events-none absolute z-20 flex h-full w-full max-w-6xl items-center justify-center px-4"
         >
-          <div className="scrollbar-hide pointer-events-auto relative max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-linear-to-b from-neutral-900/95 to-neutral-950/95 p-6 backdrop-blur-xl md:overflow-visible md:p-12">
+          <div className="scrollbar-hide pointer-events-auto relative max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-neutral-900/98 p-6 shadow-2xl md:p-12">
             <div className="absolute -top-px right-1/4 left-1/4 h-px bg-linear-to-r from-transparent via-blue-500 to-transparent" />
 
             <div className="flex flex-col items-center gap-6 md:flex-row md:gap-12">

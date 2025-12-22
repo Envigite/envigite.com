@@ -567,3 +567,135 @@ export const TechStack = () => {
     </div>
   );
 };`;
+
+export const GLOW_PRICING_TSX = `import { useEffect, useRef } from 'react';
+// Si usas CSS Modules: import styles from './GlowPricing.module.css';
+
+const plans = [
+  { title: 'Basic', price: '$9.99', features: ['Access to standard workouts', 'Email support'], ctaText: 'Get Started' },
+  { title: 'Pro', price: '$19.99', features: ['Advanced workouts', 'Priority support'], ctaText: 'Upgrade to Pro' },
+  { title: 'Ultimate', price: '$29.99', features: ['All premium workouts', '1-on-1 coaching'], ctaText: 'Go Ultimate' },
+];
+
+export const GlowPricing = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const overlay = overlayRef.current;
+    if (!container || !overlay) return;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      overlay.style.setProperty('--opacity', '1');
+      overlay.style.setProperty('--x', \`\${x}px\`);
+      overlay.style.setProperty('--y', \`\${y}px\`);
+    };
+
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        const index = cardsRef.current.indexOf(entry.target as HTMLDivElement);
+        if (index !== -1 && overlay.children[index]) {
+          const target = overlay.children[index] as HTMLElement;
+          target.style.width = \`\${entry.borderBoxSize[0].inlineSize}px\`;
+          target.style.height = \`\${entry.borderBoxSize[0].blockSize}px\`;
+        }
+      });
+    });
+
+    cardsRef.current.forEach((card) => card && observer.observe(card));
+    container.addEventListener('pointermove', handlePointerMove);
+
+    return () => {
+      container.removeEventListener('pointermove', handlePointerMove);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div className="pricing-wrapper">
+      <div className="cards-container" ref={containerRef}>
+        <div className="cards-inner base-cards">
+          {plans.map((plan, i) => (
+            <div key={plan.title} className="card flow" ref={(el) => { cardsRef.current[i] = el; }}>
+              <h2 className="card-heading">{plan.title}</h2>
+              <p className="card-price">{plan.price}</p>
+              <ul className="card-bullets flow">
+                {plan.features.map((f, idx) => <li key={idx}>{f}</li>)}
+              </ul>
+              <a href="#" className="cta">{plan.ctaText}</a>
+            </div>
+          ))}
+        </div>
+
+        <div className="overlay cards-inner" ref={overlayRef} aria-hidden="true">
+          {plans.map((plan) => (
+            <div key={plan.title} className="card">
+              <div className="cta">{plan.ctaText}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};`;
+
+export const GLOW_PRICING_CSS = `.pricing-wrapper {
+  --bg-color: #212121;
+  --card-bg: #2b2b2b;
+  --text-color: #eceff1;
+  background-color: var(--bg-color);
+  padding: 3em 1.5em;
+}
+
+.cards-container { position: relative; width: 100%; }
+.cards-inner { display: flex; flex-wrap: wrap; gap: 2.5em; }
+
+.card {
+  --hsl: var(--hue), var(--saturation), var(--lightness);
+  flex: 1 1 14rem;
+  padding: 1.5em 2em;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 1.25em;
+  background-color: var(--card-bg);
+  border: 1px solid #eceff133;
+  border-radius: 15px;
+}
+
+.card:nth-child(1) { --hue: 165; --saturation: 82.26%; --lightness: 51.37%; }
+.card:nth-child(2) { --hue: 291.34; --saturation: 95.9%; --lightness: 61.76%; }
+.card:nth-child(3) { --hue: 338.69; --saturation: 100%; --lightness: 48.04%; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--opacity, 0);
+  mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
+  -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
+}
+
+.overlay .card {
+  background-color: hsla(var(--hsl), 0.15);
+  border-color: hsla(var(--hsl), 1);
+  box-shadow: 0 0 0 1px inset hsl(var(--hsl));
+}
+
+.overlay .cta {
+  background-color: hsl(var(--hsl));
+}
+
+.base-cards .card:hover {
+  background: hsla(var(--hsl), 0.1);
+}`;
+
+export const GLOW_PRICING_USAGE = `import { GlowPricing } from '@/components/lab/effects/GlowPricing';
+
+export default function App() {
+  return <GlowPricing />;
+}`;
